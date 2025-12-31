@@ -1,0 +1,893 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Separator } from '@/components/ui/separator'
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Globe,
+  Code2,
+  Database,
+  Server,
+  BarChart3,
+  CheckCircle2,
+  Send,
+  ExternalLink,
+  Github,
+  Linkedin,
+  MessageCircle,
+  Menu,
+  X
+} from 'lucide-react'
+
+export default function Home() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    websiteType: '',
+    description: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      if (response.ok) {
+        alert('Berhasil! Pesan Anda telah terkirim. Saya akan segera menghubungi Anda.')
+        setFormData({ name: '', email: '', phone: '', websiteType: '', description: '' })
+      } else {
+        throw new Error('Gagal mengirim pesan')
+      }
+    } catch (error) {
+      alert('Gagal! Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const skills = [
+    { category: 'Backend Development', items: [
+      { name: 'PHP', level: 90 },
+      { name: 'Laravel', level: 85 },
+      { name: 'CodeIgniter', level: 80 },
+      { name: 'MySQL', level: 90 },
+      { name: 'PostgreSQL', level: 75 },
+      { name: 'SQL Server', level: 70 }
+    ]},
+    { category: 'Frontend Development', items: [
+      { name: 'HTML', level: 95 },
+      { name: 'CSS', level: 90 },
+      { name: 'JavaScript', level: 85 },
+      { name: 'Tailwind CSS', level: 80 }
+    ]},
+    { category: 'Networking & Infrastructure', items: [
+      { name: 'LAN/WAN', level: 85 },
+      { name: 'Server Management', level: 75 },
+      { name: 'Cloud Computing', level: 70 },
+      { name: 'Network Security', level: 75 }
+    ]},
+    { category: 'Other Skills', items: [
+      { name: 'Data Analytics', level: 80 },
+      { name: 'Adobe Premiere', level: 70 },
+      { name: 'Photoshop', level: 75 },
+      { name: 'Canva', level: 85 }
+    ]}
+  ]
+
+  const portfolio = [
+    {
+      title: 'Sistem Informasi Penjualan Toko Kayu UD.FR',
+      description: 'Sistem informasi penjualan berbasis website dengan metode FIFO untuk manajemen stok dan penjualan toko kayu.',
+      technologies: ['Laravel', 'MySQL', 'PHP', 'JavaScript'],
+      category: 'E-Commerce',
+      featured: true
+    },
+    {
+      title: 'Aplikasi Gofood Simple untuk Kantin',
+      description: 'Aplikasi pemesanan makanan untuk kantin dengan integrasi WhatsApp untuk order dan pembayaran.',
+      technologies: ['PHP', 'MySQL', 'WhatsApp API'],
+      category: 'Mobile App'
+    },
+    {
+      title: 'Sistem Informasi Pengendalian Persediaan Ayam',
+      description: 'Sistem informasi penjualan dan pembelian ayam dengan metode EOQ (Economic Order Quantity).',
+      technologies: ['PHP', 'MySQL', 'JavaScript'],
+      category: 'Inventory System'
+    },
+    {
+      title: 'Sistem Informasi Apotek Berbasis Web',
+      description: 'Sistem manajemen apotek untuk pencatatan penjualan obat dan pengelolaan stok obat.',
+      technologies: ['Laravel', 'MySQL', 'PHP'],
+      category: 'Healthcare'
+    },
+    {
+      title: 'Sistem Pakar Kerusakan Mobil',
+      description: 'Sistem pakar untuk mendeteksi kerusakan mobil menggunakan metode Naïve Bayes berbasis web.',
+      technologies: ['PHP', 'MySQL', 'Naïve Bayes'],
+      category: 'Expert System'
+    },
+    {
+      title: 'Sistem Informasi Pembelajaran Daring',
+      description: 'Platform pembelajaran online untuk guru dan siswa dengan fitur materi, tugas, dan ujian.',
+      technologies: ['Laravel', 'MySQL', 'PHP'],
+      category: 'Education'
+    }
+  ]
+
+  const services = [
+    {
+      title: 'Company Profile Website',
+      description: 'Website profesional untuk mempresentasikan perusahaan Anda dengan desain modern dan responsif.',
+      price: 'Mulai Rp 3.000.000',
+      features: ['Responsive Design', 'SEO Optimization', 'Contact Form', 'Social Media Integration', '3 Months Support']
+    },
+    {
+      title: 'Website UMKM',
+      description: 'Website untuk UMKM dengan fitur katalog produk dan sistem pemesanan online.',
+      price: 'Mulai Rp 2.500.000',
+      features: ['Product Catalog', 'Order System', 'WhatsApp Integration', 'Admin Panel', 'Training Included']
+    },
+    {
+      title: 'Sistem Informasi',
+      description: 'Sistem informasi khusus sesuai kebutuhan bisnis Anda untuk efisiensi operasional.',
+      price: 'Mulai Rp 5.000.000',
+      features: ['Custom Features', 'Database Design', 'User Management', 'Report Generation', '1 Year Support']
+    },
+    {
+      title: 'Website Maintenance',
+      description: 'Layanan perawatan website untuk memastikan website Anda selalu update dan berjalan lancar.',
+      price: 'Mulai Rp 500.000/bulan',
+      features: ['Regular Updates', 'Security Monitoring', 'Backup', 'Performance Optimization', 'Technical Support']
+    }
+  ]
+
+  const testimonials = [
+    {
+      name: 'Ahmad Faisal',
+      company: 'Toko Kayu UD.FR',
+      role: 'Owner',
+      content: 'Sistem informasi yang dibuat sangat membantu dalam manajemen stok dan penjualan. Fitur FIFO sangat berguna untuk bisnis kami.',
+      rating: 5
+    },
+    {
+      name: 'Siti Rahayu',
+      company: 'Klinik Gigi Sehat',
+      role: 'Manager',
+      content: 'Sistem pendataan pasien sangat rapi dan mudah digunakan. Timnya sangat profesional dan responsif.',
+      rating: 5
+    },
+    {
+      name: 'Budi Santoso',
+      company: 'Micro Electronics',
+      role: 'IT Manager',
+      content: 'Kerja sama yang sangat baik dalam mendukung infrastruktur IT perusahaan. Sangat direkomendasikan!',
+      rating: 5
+    }
+  ]
+
+  const experiences = [
+    {
+      title: 'IT Support',
+      company: 'Klinik Gigi Sehat',
+      period: 'April 2024 - Juli 2025',
+      location: 'Padang',
+      responsibilities: [
+        'Membangun sistem pendataan pasien',
+        'Manajemen sistem informasi klinik',
+        'Troubleshooting komputer dan jaringan',
+        'Membuat rekap bulanan keuangan klinik'
+      ]
+    },
+    {
+      title: 'Information Technology Support',
+      company: 'Micro Electronics',
+      period: 'Agustus 2021 - Januari 2024',
+      location: 'Padang',
+      responsibilities: [
+        'Menangani permintaan bantuan hardware, software, dan jaringan',
+        'Monitoring jaringan lokal dan konektivitas internet',
+        'Memberikan laporan rutin ke manajer IT',
+        'Sosialisasi keamanan siber'
+      ]
+    },
+    {
+      title: 'Web Developer',
+      company: 'Micro Usaha UD.FR (Toko Kayu)',
+      period: 'Januari 2020 - April 2020',
+      location: 'Padang',
+      responsibilities: [
+        'Membuat dan mengelola website toko kayu',
+        'Menambahkan fitur katalog produk',
+        'Membuat landing page untuk iklan digital'
+      ]
+    }
+  ]
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+    setMobileMenuOpen(false)
+  }
+
+  const whatsappNumber = '6289666664656'
+  const whatsappMessage = 'Halo, saya ingin konsultasi mengenai pembuatan website'
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+              <Code2 className="h-8 w-8 text-primary" />
+              <span className="font-bold text-xl">Kevin Bagas Putra</span>
+            </div>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-6">
+              <button onClick={() => scrollToSection('about')} className="text-slate-700 hover:text-primary transition-colors">
+                About
+              </button>
+              <button onClick={() => scrollToSection('skills')} className="text-slate-700 hover:text-primary transition-colors">
+                Skills
+              </button>
+              <button onClick={() => scrollToSection('portfolio')} className="text-slate-700 hover:text-primary transition-colors">
+                Portfolio
+              </button>
+              <button onClick={() => scrollToSection('services')} className="text-slate-700 hover:text-primary transition-colors">
+                Services
+              </button>
+              <button onClick={() => scrollToSection('testimonials')} className="text-slate-700 hover:text-primary transition-colors">
+                Testimonials
+              </button>
+              <Button onClick={() => scrollToSection('contact')} className="bg-primary hover:bg-primary/90">
+                Hire Me
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-t border-slate-200 py-4 px-4 space-y-4">
+            <button onClick={() => scrollToSection('about')} className="block text-slate-700 hover:text-primary transition-colors">
+              About
+            </button>
+            <button onClick={() => scrollToSection('skills')} className="block text-slate-700 hover:text-primary transition-colors">
+              Skills
+            </button>
+            <button onClick={() => scrollToSection('portfolio')} className="block text-slate-700 hover:text-primary transition-colors">
+              Portfolio
+            </button>
+            <button onClick={() => scrollToSection('services')} className="block text-slate-700 hover:text-primary transition-colors">
+              Services
+            </button>
+            <button onClick={() => scrollToSection('testimonials')} className="block text-slate-700 hover:text-primary transition-colors">
+              Testimonials
+            </button>
+            <Button onClick={() => scrollToSection('contact')} className="w-full bg-primary hover:bg-primary/90">
+              Hire Me
+            </Button>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <div className="mb-8">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-6 shadow-lg">
+                <img
+                  src="/profile-photo.png"
+                  alt="Kevin Bagas Putra"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <Badge className="mb-4 bg-primary text-white hover:bg-primary/90">Available for Hire</Badge>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+              Kevin Bagas Putra, S.Kom
+            </h1>
+
+            <p className="text-xl sm:text-2xl text-slate-600 mb-8">
+              Freelance Web Developer – Laravel & MySQL
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <Button
+                onClick={() => scrollToSection('contact')}
+                size="lg"
+                className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white"
+              >
+                Hire Me
+              </Button>
+              <Button
+                onClick={() => scrollToSection('portfolio')}
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto border-primary text-primary hover:bg-primary hover:text-white"
+              >
+                View Portfolio
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto border-green-600 text-green-600 hover:bg-green-600 hover:text-white"
+              >
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  WhatsApp
+                </a>
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 text-slate-600">
+              <div className="flex items-center gap-2">
+                <Mail className="h-5 w-5 text-primary" />
+                <span className="text-sm">kevinbagasputra@gmail.com</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-5 w-5 text-primary" />
+                <span className="text-sm">+62 896-6666-4656</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-5 w-5 text-primary" />
+                <span className="text-sm">Jakarta, Indonesia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* About Section */}
+      <section id="about" className="py-12 sm:py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            About Me
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="border-l-4 border-l-primary">
+              <CardHeader>
+                <CardTitle>Professional Profile</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-slate-700">
+                  Seorang sarjana Sistem Informasi, terlatih dalam berbagai disiplin ilmu sistem informasi dan memiliki pengetahuan yang terintegrasi dengan proses implementasi IT. Berpengalaman dalam manajemen proyek TI, analisis sistem, perancangan basis data, pengembangan aplikasi, pengelolaan infrastruktur TI, serta integrasi sistem bisnis dan teknologi informasi.
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <span className="text-slate-700">GPA: 3.46</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <span className="text-slate-700">Sertifikat MikroTik MTCNA (2018)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <span className="text-slate-700">5+ Tahun Pengalaman IT</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-primary">
+              <CardHeader>
+                <CardTitle>Education</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-slate-900">STMIK Indonesia Padang</h4>
+                    <p className="text-slate-600">S1 Sistem Informasi</p>
+                    <p className="text-sm text-slate-500">September 2016 - September 2021</p>
+                  </div>
+                  <Separator />
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Tugas Akhir</h4>
+                    <p className="text-slate-700 text-sm">Sistem Informasi Penjualan pada Toko Kayu UD.FR Berbasis Website Menggunakan Metode FIFO</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Work Experience */}
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold mb-8 text-center">Work Experience</h3>
+            <div className="space-y-6">
+              {experiences.map((exp, index) => (
+                <Card key={index} className="border-l-4 border-l-slate-400 hover:border-l-primary transition-colors">
+                  <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <CardTitle>{exp.title}</CardTitle>
+                      <Badge variant="outline">{exp.period}</Badge>
+                    </div>
+                    <CardDescription className="text-base">
+                      {exp.company} • {exp.location}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {exp.responsibilities.map((resp, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                          <span className="text-slate-700">{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* Skills Section */}
+      <section id="skills" className="py-12 sm:py-16 px-4 bg-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            Skills & Tech Stack
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {skills.map((category, categoryIndex) => (
+              <Card key={categoryIndex}>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    {categoryIndex === 0 && <Database className="h-5 w-5 text-primary" />}
+                    {categoryIndex === 1 && <Code2 className="h-5 w-5 text-primary" />}
+                    {categoryIndex === 2 && <Server className="h-5 w-5 text-primary" />}
+                    {categoryIndex === 3 && <BarChart3 className="h-5 w-5 text-primary" />}
+                    {category.category}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {category.items.map((skill, skillIndex) => (
+                    <div key={skillIndex}>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm font-medium text-slate-700">{skill.name}</span>
+                        <span className="text-sm text-slate-600">{skill.level}%</span>
+                      </div>
+                      <Progress value={skill.level} className="h-2" />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Soft Skills */}
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold mb-6 text-center">Soft Skills</h3>
+            <div className="flex flex-wrap justify-center gap-3">
+              {['Communication', 'Problem Solving', 'Time Management', 'Team Work', 'Leadership', 'Adaptability', 'Critical Thinking', 'Project Management'].map((skill, index) => (
+                <Badge key={index} variant="secondary" className="text-base px-4 py-2">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* Portfolio Section */}
+      <section id="portfolio" className="py-12 sm:py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            Portfolio
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {portfolio.map((project, index) => (
+              <Card key={index} className={`flex flex-col ${project.featured ? 'border-2 border-primary' : ''}`}>
+                <CardHeader>
+                  <div className="flex items-start justify-between gap-2">
+                    <CardTitle className="text-lg">{project.title}</CardTitle>
+                    {project.featured && <Badge className="bg-primary">Featured</Badge>}
+                  </div>
+                  <CardDescription>{project.category}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <p className="text-slate-700 text-sm mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, techIndex) => (
+                      <Badge key={techIndex} variant="outline" className="text-xs">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* Services Section */}
+      <section id="services" className="py-12 sm:py-16 px-4 bg-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">
+            Freelance Services
+          </h2>
+          <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">
+            Jasa pembuatan website profesional dengan kualitas terbaik untuk kebutuhan bisnis Anda
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {services.map((service, index) => (
+              <Card key={index} className="border-t-4 border-t-primary hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle>{service.title}</CardTitle>
+                  <CardDescription className="text-base text-slate-700">{service.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-lg font-bold text-primary">{service.price}</div>
+                  <Separator />
+                  <ul className="space-y-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-green-600 flex-shrink-0" />
+                        <span className="text-sm text-slate-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button onClick={() => scrollToSection('contact')} className="w-full bg-primary hover:bg-primary/90">
+                    Request Quotation
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-12 sm:py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
+            What Clients Say
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-slate-50">
+                <CardHeader>
+                  <div className="flex items-center gap-1 mb-2">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i} className="text-yellow-500">★</span>
+                    ))}
+                  </div>
+                  <CardTitle className="text-lg">{testimonial.name}</CardTitle>
+                  <CardDescription>
+                    {testimonial.role}{testimonial.company && ` • ${testimonial.company}`}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-slate-700 italic">&ldquo;{testimonial.content}&rdquo;</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* Contact Section */}
+      <section id="contact" className="py-12 sm:py-16 px-4 bg-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">
+            Let's Work Together
+          </h2>
+          <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">
+            Punya proyek website yang ingin dibuat? Hubungi saya dan mari diskusikan kebutuhan Anda
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Contact Info */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Mail className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Email</p>
+                      <p className="font-medium">kevinbagasputra@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Phone className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Phone</p>
+                      <p className="font-medium">+62 896-6666-4656</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Location</p>
+                      <p className="font-medium">Jakarta, Indonesia</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Globe className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Website</p>
+                      <a
+                        href="https://kevinbagasputra.github.io/my-cv/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-primary hover:underline flex items-center gap-1"
+                      >
+                        kevinbagasputra.github.io/my-cv/
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-sm text-slate-600 mb-3">Connect with me</p>
+                  <div className="flex gap-3">
+                    <Button asChild variant="outline" size="icon">
+                      <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-5 w-5 text-green-600" />
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" size="icon">
+                      <a href="https://github.com/kevinbagasputra" target="_blank" rel="noopener noreferrer">
+                        <Github className="h-5 w-5" />
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline" size="icon">
+                      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                        <Linkedin className="h-5 w-5" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Contact Form */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Send Message</CardTitle>
+                <CardDescription>Fill out form below and I'll get back to you soon</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium">Nama Lengkap</label>
+                    <Input
+                      id="name"
+                      name="name"
+                      required
+                      placeholder="Masukkan nama Anda"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium">Email</label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="email@contoh.com"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="text-sm font-medium">No. Telepon (Opsional)</label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+62 xxx xxxx xxxx"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="websiteType" className="text-sm font-medium">Jenis Website</label>
+                    <select
+                      id="websiteType"
+                      name="websiteType"
+                      required
+                      className="flex h-10 w-full rounded-md border border-slate-300 bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                      value={formData.websiteType}
+                      onChange={(e) => handleInputChange(e as any)}
+                    >
+                      <option value="">Pilih jenis website</option>
+                      <option value="Company Profile">Company Profile</option>
+                      <option value="Website UMKM">Website UMKM</option>
+                      <option value="Sistem Informasi">Sistem Informasi</option>
+                      <option value="Maintenance">Maintenance Website</option>
+                      <option value="Lainnya">Lainnya</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="description" className="text-sm font-medium">Deskripsi Kebutuhan</label>
+                    <Textarea
+                      id="description"
+                      name="description"
+                      required
+                      placeholder="Ceritakan detail kebutuhan website Anda..."
+                      className="min-h-32"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90" disabled={isSubmitting}>
+                    {isSubmitting ? 'Mengirim...' : (
+                      <>
+                        <Send className="h-4 w-4 mr-2" />
+                        Kirim Pesan
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-8 px-4 mt-auto">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <h3 className="text-lg font-bold mb-4">Kevin Bagas Putra</h3>
+              <p className="text-slate-400 text-sm">
+                Freelance Web Developer dengan pengalaman dalam pembuatan website profesional menggunakan Laravel dan MySQL.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+              <div className="space-y-2 text-sm">
+                <button onClick={() => scrollToSection('about')} className="block text-slate-400 hover:text-white transition-colors">
+                  About Me
+                </button>
+                <button onClick={() => scrollToSection('portfolio')} className="block text-slate-400 hover:text-white transition-colors">
+                  Portfolio
+                </button>
+                <button onClick={() => scrollToSection('services')} className="block text-slate-400 hover:text-white transition-colors">
+                  Services
+                </button>
+                <button onClick={() => scrollToSection('contact')} className="block text-slate-400 hover:text-white transition-colors">
+                  Contact
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Contact</h3>
+              <div className="space-y-2 text-sm text-slate-400">
+                <p>kevinbagasputra@gmail.com</p>
+                <p>+62 896-6666-4656</p>
+                <p>Jakarta, Indonesia</p>
+              </div>
+            </div>
+          </div>
+
+          <Separator className="bg-slate-800 mb-8" />
+
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <p>© 2025 Kevin Bagas Putra. All rights reserved.</p>
+              <Link
+                href="/login"
+                className="text-slate-400 hover:text-primary transition-colors"
+              >
+                Admin Login
+              </Link>
+            </div>
+            <div className="flex gap-4">
+              <Button asChild variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button asChild variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                <a href="https://github.com/kevinbagasputra" target="_blank" rel="noopener noreferrer">
+                  <Github className="h-5 w-5" />
+                </a>
+              </Button>
+              <Button asChild variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}
